@@ -3,8 +3,8 @@
     "short_name": "GoldCalcPro",
     "start_url": "./index.html",
     "display": "standalone",
-    "background_color": "#1a3c34",
-    "theme_color": "#1a3c34",
+    "background_color": "#BEE3F8",
+    "theme_color": "#BEE3F8",
     "icons": [
         {
             "src": "./icon-192x192.png",
