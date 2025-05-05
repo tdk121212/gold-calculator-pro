@@ -10,13 +10,14 @@
     <link rel="manifest" href="./manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link href="https://fonts.googleapis.com/css2?family=Vazir:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Vazir', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             margin: 0;
             padding: 0;
             direction: rtl;
-            background-color: #1a3c34; /* سبز تیره */
+            background-color: #BEE3F8; /* آبی پررنگ‌تر */
         }
         .hamburger {
             font-size: 30px;
@@ -25,8 +26,10 @@
             position: fixed;
             top: 10px;
             right: 10px;
-            color: #fff;
+            color: #2C5282; /* آبی تیره */
             z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 5px;
         }
         .menu {
             height: 100%;
@@ -34,30 +37,45 @@
             position: fixed;
             top: 0;
             right: 0;
-            background-color: #2c3e50;
+            background-color: #2C5282;
             overflow-x: hidden;
             transition: 0.5s;
             z-index: 999;
+        }
+        .menu.open {
+            width: 250px;
+        }
+        .menu .close-btn {
+            font-size: 30px;
+            cursor: pointer;
+            padding: 10px;
+            color: #E6F3FA;
+            text-align: right;
+            display: none;
+        }
+        .menu.open .close-btn {
+            display: block;
         }
         .menu a {
             padding: 15px;
             text-decoration: none;
             font-size: 20px;
-            color: #ecf0f1;
+            color: #E6F3FA;
             display: block;
         }
         .menu a:hover {
-            background-color: #34495e;
+            background-color: #3B6899;
         }
         .content {
             padding: 20px;
+            padding-top: 60px;
             display: none;
         }
         .content.active {
             display: block;
         }
         .calculator {
-            margin-top: 50px;
+            margin-top: 20px;
             text-align: center;
             background-color: #fff;
             padding: 20px;
@@ -68,7 +86,7 @@
             margin-right: auto;
         }
         .calculator h1 {
-            color: #1a3c34;
+            color: #2C5282;
             font-size: 26px;
             margin-bottom: 20px;
         }
@@ -76,26 +94,26 @@
             padding: 15px;
             margin: 10px 0;
             width: 300px;
-            height: 50px; /* کادر بزرگ‌تر */
-            font-size: 20px; /* فونت بزرگ‌تر */
+            height: 50px;
+            font-size: 20px;
             text-align: left;
             direction: ltr;
             font-family: monospace;
-            border: 2px solid #1a3c34;
+            border: 2px solid #2C5282;
             border-radius: 8px;
-            background-color: #f0f4f8;
+            background-color: #F7FAFC;
             transition: border-color 0.3s;
         }
         .calculator input:focus {
-            border-color: #27ae60;
+            border-color: #4299E1;
             outline: none;
             background-color: #fff;
         }
-        #result, #mazneResult, #ounceResult, #debtResult, #convertResult {
+        #result, #mazneResult, #ounceResult, #convertResult, #convertPriceResult {
             font-size: 22px;
             margin-top: 20px;
             padding: 12px;
-            background-color: #27ae60;
+            background-color: #4299E1;
             color: white;
             border-radius: 8px;
             display: inline-block;
@@ -104,22 +122,22 @@
             margin-top: 20px;
             max-height: 250px;
             overflow-y: auto;
-            background-color: #f0f4f8;
+            background-color: #F7FAFC;
             padding: 10px;
             border-radius: 8px;
             text-align: right;
             font-size: 14px;
-            color: #1a3c34;
+            color: #2C5282;
         }
         #history div {
             padding: 5px;
-            border-bottom: 1px solid #d5dadb;
+            border-bottom: 1px solid #CBD5E0;
         }
         #history::-webkit-scrollbar {
             width: 8px;
         }
         #history::-webkit-scrollbar-thumb {
-            background-color: #27ae60;
+            background-color: #4299E1;
             border-radius: 4px;
         }
         button {
@@ -129,15 +147,12 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            background-color: #27ae60;
+            background-color: #4299E1;
             color: white;
             transition: opacity 0.3s;
         }
         button:hover {
             opacity: 0.9;
-        }
-        #clearHistory, #clearDebtHistory {
-            background-color: #e74c3c;
         }
         .input-label {
             display: flex;
@@ -147,7 +162,7 @@
         .input-label span {
             margin-left: 10px;
             font-size: 18px;
-            color: #1a3c34;
+            color: #2C5282;
             width: 80px;
             text-align: right;
         }
@@ -155,36 +170,74 @@
             flex: 1;
             margin: 0;
         }
-        #debtTable {
-            margin-top: 20px;
-            background-color: #f0f4f8;
-            padding: 10px;
+        .debt-container, .payment-container {
+            padding: 15px;
             border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .debt-container {
+            background-color: #FED7D7;
+        }
+        .payment-container {
+            background-color: #C6F6D5;
+        }
+        .debt-container button {
+            background-color: #E53E3E;
+            color: white;
+        }
+        .payment-container button {
+            background-color: #48BB78;
+            color: white;
+        }
+        #clearTable {
+            background-color: #4299E1;
+            color: white;
+            margin-top: 20px;
+        }
+        #debtTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
             font-size: 14px;
-            color: #1a3c34;
-            max-height: 250px;
-            overflow-y: auto;
+            background-color: #F7FAFC;
+            border-radius: 8px;
+            overflow: hidden;
         }
-        #debtTable div {
-            padding: 5px;
-            border-bottom: 1px solid #d5dadb;
+        #debtTable th, #debtTable td {
+            padding: 10px;
+            border: 1px solid #CBD5E0;
+            text-align: center;
         }
-        #debtTable::-webkit-scrollbar {
-            width: 8px;
+        #debtTable th {
+            background-color: #2C5282;
+            color: white;
         }
-        #debtTable::-webkit-scrollbar-thumb {
-            background-color: #27ae60;
-            border-radius: 4px;
+        #debtTable .debt-row {
+            background-color: #FED7D7;
+        }
+        #debtTable .payment-row {
+            background-color: #C6F6D5;
+        }
+        #debtTable .details {
+            direction: ltr;
+        }
+        #totalResult {
+            font-size: 18px;
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 8px;
+            display: inline-block;
         }
     </style>
 </head>
 <body>
     <div class="hamburger" onclick="toggleMenu()">☰</div>
     <div id="sideMenu" class="menu">
+        <div class="close-btn" onclick="toggleMenu()">✖</div>
         <a href="#" onclick="showPage('home')">صفحه اصلی</a>
         <a href="#" onclick="showPage('mazne')">مظنه</a>
         <a href="#" onclick="showPage('ounce')">انس</a>
-        <a href="#" onclick="showPage('debt')">محاسبه بدهی</a>
+        <a href="#" onclick="showPage('debt')">محاسبه بدهی مشتری</a>
         <a href="#" onclick="showPage('convert')">تبدیل عیار</a>
     </div>
 
@@ -205,7 +258,6 @@
                 <input type="text" inputmode="numeric" id="feePercent" placeholder="درصد" oninput="formatInput(this); calculateGold()" autocomplete="off">
             </div>
             <p id="result">نتیجه: ۰ تومان</p>
-            <button id="clearHistory" onclick="clearHistory()">پاک کردن تاریخچه</button>
             <div id="history"></div>
         </div>
     </div>
@@ -215,20 +267,20 @@
         <div class="calculator">
             <h1>محاسبه مظنه</h1>
             <div class="input-label">
-                <span>قیمت مظنه</span>
+                <span>مظنه</span>
                 <input type="text" inputmode="numeric" id="maznePrice" placeholder="تومان" oninput="formatInput(this); calculateMazne()" autocomplete="off">
             </div>
             <div class="input-label">
-                <span>قیمت واحد</span>
-                <input type="text" inputmode="numeric" id="goldUnitPrice" placeholder="تومان" oninput="formatInput(this); calculateMazne()" autocomplete="off">
+                <span>فی طلا</span>
+                <input type="text" inputmode="numeric" id="goldUnitPrice" placeholder="تومان" oninput="formatInput(this); calculateMazneReverse()" autocomplete="off">
             </div>
             <div class="input-label">
-                <span>مقدار مظنه</span>
-                <input type="text" inputmode="numeric" id="mazneAmount" placeholder="مثلاً ۴.۳۳۱۸" oninput="formatInput(this); calculateMazne()" autocomplete="off">
+                <span>مبلغ</span>
+                <input type="text" inputmode="numeric" id="mazneAmount" placeholder="تومان" oninput="formatInput(this); calculateMazneWeight()" autocomplete="off">
             </div>
             <div class="input-label">
                 <span>وزن طلا</span>
-                <input type="text" inputmode="numeric" id="mazneWeight" placeholder="گرم" oninput="formatInput(this); calculateMazne()" autocomplete="off">
+                <input type="text" inputmode="numeric" id="mazneWeight" placeholder="گرم" oninput="formatInput(this)" autocomplete="off">
             </div>
             <p id="mazneResult">نتیجه: ۰ تومان</p>
         </div>
@@ -247,37 +299,50 @@
                 <input type="text" inputmode="numeric" id="dollarPrice" placeholder="تومان" oninput="formatInput(this); calculateOunce()" autocomplete="off">
             </div>
             <div class="input-label">
-                <span>قیمت طلا</span>
-                <input type="text" inputmode="numeric" id="ounceGoldPrice" placeholder="تومان" oninput="formatInput(this); calculateOunce()" autocomplete="off">
+                <span>فی طلا</span>
+                <input type="text" inputmode="numeric" id="ounceGoldPrice" placeholder="تومان" oninput="formatInput(this); calculateOunceReverse()" autocomplete="off">
             </div>
             <p id="ounceResult">نتیجه: ۰ تومان</p>
         </div>
     </div>
 
-    <!-- صفحه بدهی -->
+    <!-- صفحه محاسبه بدهی مشتری -->
     <div id="debt" class="content">
         <div class="calculator">
-            <h1>محاسبه بدهی</h1>
-            <div class="input-label">
-                <span>مقدار بدهی</span>
-                <input type="text" inputmode="numeric" id="debtAmount" placeholder="گرم" oninput="formatInput(this); calculateDebt()" autocomplete="off">
+            <h1>محاسبه بدهی مشتری</h1>
+            <div class="debt-container">
+                <div class="input-label">
+                    <span>بدهی</span>
+                    <input type="text" inputmode="numeric" id="debtAmount" placeholder="تومان" oninput="formatInput(this)" autocomplete="off">
+                </div>
+                <div class="input-label">
+                    <span>فی طلا</span>
+                    <input type="text" inputmode="numeric" id="debtGoldPrice" placeholder="تومان" oninput="formatInput(this)" autocomplete="off">
+                </div>
+                <button onclick="registerDebt()">ثبت</button>
             </div>
-            <div class="input-label">
-                <span>قیمت طلا</span>
-                <input type="text" inputmode="numeric" id="debtGoldPrice" placeholder="تومان" oninput="formatInput(this); calculateDebt()" autocomplete="off">
+            <div class="payment-container">
+                <div class="input-label">
+                    <span>پرداخت</span>
+                    <input type="text" inputmode="numeric" id="paymentAmount" placeholder="تومان" oninput="formatInput(this)" autocomplete="off">
+                </div>
+                <div class="input-label">
+                    <span>فی طلا</span>
+                    <input type="text" inputmode="numeric" id="paymentGoldPrice" placeholder="تومان" oninput="formatInput(this)" autocomplete="off">
+                </div>
+                <button onclick="registerPayment()">ثبت</button>
             </div>
-            <div class="input-label">
-                <span>مبلغ پرداخت</span>
-                <input type="text" inputmode="numeric" id="paymentAmount" placeholder="تومان" oninput="formatInput(this); calculateDebt()" autocomplete="off">
-            </div>
-            <div class="input-label">
-                <span>قیمت طلا</span>
-                <input type="text" inputmode="numeric" id="paymentGoldPrice" placeholder="تومان" oninput="formatInput(this); calculateDebt()" autocomplete="off">
-            </div>
-            <p id="debtResult"></p>
+            <table id="debtTable">
+                <thead>
+                    <tr>
+                        <th>مقدار (گرم)</th>
+                        <th>جزئیات</th>
+                    </tr>
+                </thead>
+                <tbody id="debtTableBody"></tbody>
+            </table>
             <p id="totalResult">نتیجه کلی: ۰ گرم</p>
-            <button id="clearDebtHistory" onclick="clearDebtHistory()">پاک کردن تاریخچه بدهی</button>
-            <div id="debtTable"></div>
+            <button id="clearTable" onclick="clearDebtTable()">پاک کردن جدول</button>
         </div>
     </div>
 
@@ -294,13 +359,31 @@
                 <input type="text" inputmode="numeric" id="convertKarat" placeholder="مثلاً ۵۸۵" oninput="formatInput(this); calculateConvert()" autocomplete="off">
             </div>
             <p id="convertResult">نتیجه: ۰ گرم (طلای ۷۵۰)</p>
+            <div class="input-label">
+                <span>قیمت طلا</span>
+                <input type="text" inputmode="numeric" id="convertPrice" placeholder="تومان (عیار ۷۵۰)" oninput="formatInput(this); calculateConvertPrice()" autocomplete="off">
+            </div>
+            <div class="input-label">
+                <span>عیار مقصد</span>
+                <input type="text" inputmode="numeric" id="convertTargetKarat" placeholder="مثلاً ۵۸۵" oninput="formatInput(this); calculateConvertPrice()" autocomplete="off">
+            </div>
+            <p id="convertPriceResult">نتیجه: ۰ تومان</p>
         </div>
     </div>
 
     <script>
         function toggleMenu() {
             let menu = document.getElementById("sideMenu");
-            menu.style.width = menu.style.width === "250px" ? "0" : "250px";
+            let hamburger = document.querySelector(".hamburger");
+            if (menu.classList.contains("open")) {
+                menu.classList.remove("open");
+                menu.style.width = "0";
+                hamburger.style.display = "block";
+            } else {
+                menu.classList.add("open");
+                menu.style.width = "250px";
+                hamburger.style.display = "none";
+            }
         }
 
         function showPage(pageId) {
@@ -312,8 +395,8 @@
         document.addEventListener("click", function(event) {
             let menu = document.getElementById("sideMenu");
             let hamburger = document.querySelector(".hamburger");
-            if (menu.style.width === "250px" && !menu.contains(event.target) && !hamburger.contains(event.target)) {
-                menu.style.width = "0";
+            if (menu.classList.contains("open") && !menu.contains(event.target) && !hamburger.contains(event.target)) {
+                toggleMenu();
             }
         });
 
@@ -351,11 +434,13 @@
             document.getElementById("debtGoldPrice").value = "";
             document.getElementById("paymentAmount").value = "";
             document.getElementById("paymentGoldPrice").value = "";
-            document.getElementById("debtResult").innerText = "";
             document.getElementById("totalResult").innerText = "نتیجه کلی: ۰ گرم";
             document.getElementById("convertWeight").value = "";
             document.getElementById("convertKarat").value = "";
             document.getElementById("convertResult").innerText = "نتیجه: ۰ گرم (طلای ۷۵۰)";
+            document.getElementById("convertPrice").value = "";
+            document.getElementById("convertTargetKarat").value = "";
+            document.getElementById("convertPriceResult").innerText = "نتیجه: ۰ تومان";
 
             let history = JSON.parse(localStorage.getItem("goldCalcHistory")) || [];
             updateHistory(history);
@@ -405,7 +490,7 @@
 
             let history = JSON.parse(localStorage.getItem("goldCalcHistory")) || [];
             history.push(entry);
-            if (history.length > 1000) { // ظرفیت ۱۰۰۰
+            if (history.length > 1000) {
                 history.shift();
             }
             localStorage.setItem("goldCalcHistory", JSON.stringify(history));
@@ -422,105 +507,93 @@
             });
         }
 
-        function clearHistory() {
-            localStorage.removeItem("goldCalcHistory");
-            updateHistory([]);
-            alert("تاریخچه پاک شد!");
+        function calculateMazne() {
+            let maznePrice = parseFloat(document.getElementById("maznePrice").value.replace(/,/g, "")) || 0;
+            let goldUnitPrice = parseFloat(document.getElementById("goldUnitPrice").value.replace(/,/g, "")) || 0;
+
+            if (maznePrice <= 0) {
+                document.getElementById("mazneResult").innerText = "لطفاً مقدار معتبر وارد کنید!";
+                return;
+            }
+
+            let result = Math.round(((maznePrice / 4.6083) * 750) / 705);
+            document.getElementById("goldUnitPrice").value = result.toLocaleString("en-US");
+            document.getElementById("mazneResult").innerText = 
+                `نتیجه: ${result.toLocaleString("en-US")} تومان`;
         }
 
-        function calculateMazne() {
-            let maznePriceInput = document.getElementById("maznePrice").value.replace(/,/g, "");
-            let goldUnitPriceInput = document.getElementById("goldUnitPrice").value.replace(/,/g, "");
-            let mazneAmountInput = document.getElementById("mazneAmount").value.replace(/,/g, "");
-            let mazneWeightInput = document.getElementById("mazneWeight").value.replace(/,/g, "");
+        function calculateMazneReverse() {
+            let maznePrice = parseFloat(document.getElementById("maznePrice").value.replace(/,/g, "")) || 0;
+            let goldUnitPrice = parseFloat(document.getElementById("goldUnitPrice").value.replace(/,/g, "")) || 0;
 
-            if (!maznePriceInput || !goldUnitPriceInput || !mazneAmountInput || !mazneWeightInput) {
-                document.getElementById("mazneResult").innerText = "لطفاً همه کادرها را پر کنید!";
+            if (goldUnitPrice <= 0) {
+                document.getElementById("mazneResult").innerText = "لطفاً مقدار معتبر وارد کنید!";
                 return;
             }
 
-            let maznePrice = parseFloat(maznePriceInput) || 0;
-            let goldUnitPrice = parseFloat(goldUnitPriceInput) || 0;
-            let mazneAmount = parseFloat(mazneAmountInput) || 0;
-            let mazneWeight = parseFloat(mazneWeightInput) || 0;
-
-            if (maznePrice <= 0 || goldUnitPrice <= 0 || mazneAmount <= 0 || mazneWeight <= 0) {
-                document.getElementById("mazneResult").innerText = "لطفاً مقادیر معتبر وارد کنید!";
-                return;
-            }
-
-            let totalCost = Math.round((maznePrice / mazneAmount) * mazneWeight);
+            let result = Math.round(((goldUnitPrice * 705) / 750) * 4.6083);
+            document.getElementById("maznePrice").value = result.toLocaleString("en-US");
             document.getElementById("mazneResult").innerText = 
-                `نتیجه: ${totalCost.toLocaleString("en-US")} تومان`;
+                `نتیجه: ${result.toLocaleString("en-US")} تومان`;
+        }
+
+        function calculateMazneWeight() {
+            let mazneAmount = parseFloat(document.getElementById("mazneAmount").value.replace(/,/g, "")) || 0;
+            let goldUnitPrice = parseFloat(document.getElementById("goldUnitPrice").value.replace(/,/g, "")) || 0;
+
+            if (mazneAmount <= 0 || goldUnitPrice <= 0) {
+                document.getElementById("mazneWeight").value = "";
+                return;
+            }
+
+            let weight = mazneAmount / goldUnitPrice;
+            document.getElementById("mazneWeight").value = weight.toLocaleString("en-US", { maximumFractionDigits: 3 });
         }
 
         function calculateOunce() {
-            let ouncePriceInput = document.getElementById("ouncePrice").value.replace(/,/g, "");
-            let dollarPriceInput = document.getElementById("dollarPrice").value.replace(/,/g, "");
-            let ounceGoldPriceInput = document.getElementById("ounceGoldPrice").value.replace(/,/g, "");
+            let ouncePrice = parseFloat(document.getElementById("ouncePrice").value.replace(/,/g, "")) || 0;
+            let dollarPrice = parseFloat(document.getElementById("dollarPrice").value.replace(/,/g, "")) || 0;
 
-            if (!ouncePriceInput || !dollarPriceInput || !ounceGoldPriceInput) {
-                document.getElementById("ounceResult").innerText = "لطفاً همه کادرها را پر کنید!";
-                return;
-            }
-
-            let ouncePrice = parseFloat(ouncePriceInput) || 0;
-            let dollarPrice = parseFloat(dollarPriceInput) || 0;
-            let ounceGoldPrice = parseFloat(ounceGoldPriceInput) || 0;
-
-            if (ouncePrice <= 0 || dollarPrice <= 0 || ounceGoldPrice <= 0) {
+            if (ouncePrice <= 0 || dollarPrice <= 0) {
                 document.getElementById("ounceResult").innerText = "لطفاً مقادیر معتبر وارد کنید!";
                 return;
             }
 
-            let totalCost = Math.round((ouncePrice * dollarPrice) / 31.1035);
+            let result = (((ouncePrice / 31.103) * 750) / 999.99) * dollarPrice;
+            document.getElementById("ounceGoldPrice").value = Math.round(result).toLocaleString("en-US");
             document.getElementById("ounceResult").innerText = 
-                `نتیجه: ${totalCost.toLocaleString("en-US")} تومان`;
+                `نتیجه: ${Math.round(result).toLocaleString("en-US")} تومان`;
         }
 
-        function calculateDebt() {
-            let debtAmountInput = document.getElementById("debtAmount").value.replace(/,/g, "");
-            let debtGoldPriceInput = document.getElementById("debtGoldPrice").value.replace(/,/g, "");
-            let paymentAmountInput = document.getElementById("paymentAmount").value.replace(/,/g, "");
-            let paymentGoldPriceInput = document.getElementById("paymentGoldPrice").value.replace(/,/g, "");
+        function calculateOunceReverse() {
+            let dollarPrice = parseFloat(document.getElementById("dollarPrice").value.replace(/,/g, "")) || 0;
+            let ounceGoldPrice = parseFloat(document.getElementById("ounceGoldPrice").value.replace(/,/g, "")) || 0;
 
-            if (!debtAmountInput || !debtGoldPriceInput || !paymentAmountInput || !paymentGoldPriceInput) {
-                document.getElementById("debtResult").innerText = "لطفاً همه کادرها را پر کنید!";
+            if (ounceGoldPrice <= 0 || dollarPrice <= 0) {
+                document.getElementById("ounceResult").innerText = "لطفاً مقادیر معتبر وارد کنید!";
                 return;
             }
 
-            let debtAmount = parseFloat(debtAmountInput) || 0;
-            let debtGoldPrice = parseFloat(debtGoldPriceInput) || 0;
-            let paymentAmount = parseFloat(paymentAmountInput) || 0;
-            let paymentGoldPrice = parseFloat(paymentGoldPriceInput) || 0;
+            let result = ((ounceGoldPrice * 999.99) / 750) * 31.103 / dollarPrice;
+            document.getElementById("ouncePrice").value = Math.round(result).toLocaleString("en-US");
+            document.getElementById("ounceResult").innerText = 
+                `نتیجه: ${Math.round(result).toLocaleString("en-US")} دلار`;
+        }
 
-            if (debtAmount <= 0 || debtGoldPrice <= 0 || paymentAmount < 0 || paymentGoldPrice <= 0) {
-                document.getElementById("debtResult").innerText = "لطفاً مقادیر معتبر وارد کنید!";
+        function registerDebt() {
+            let debtAmount = parseFloat(document.getElementById("debtAmount").value.replace(/,/g, "")) || 0;
+            let debtGoldPrice = parseFloat(document.getElementById("debtGoldPrice").value.replace(/,/g, "")) || 0;
+
+            if (debtAmount <= 0 || debtGoldPrice <= 0) {
+                alert("لطفاً مقادیر معتبر وارد کنید!");
                 return;
             }
 
-            let debtInToman = debtAmount * debtGoldPrice;
-            let paymentInGold = paymentAmount / paymentGoldPrice;
-            let totalDebt = debtAmount - paymentInGold;
-
-            document.getElementById("debtResult").innerText = 
-                `ارزش بدهی: ${debtInToman.toLocaleString("en-US")} تومان\n` +
-                `پرداخت معادل: ${paymentInGold.toLocaleString("en-US", { maximumFractionDigits: 3 })} گرم\n` +
-                `بدهی نهایی: ${totalDebt.toLocaleString("en-US", { maximumFractionDigits: 3 })} گرم`;
-
-            document.getElementById("totalResult").innerText = 
-                `نتیجه کلی: ${totalDebt.toLocaleString("en-US", { maximumFractionDigits: 3 })} گرم`;
-
-            let now = new Date();
-            let time = now.toLocaleTimeString("fa-IR");
-            let date = now.toLocaleDateString("fa-IR");
-            let entry = {
-                debt: debtAmount.toLocaleString("en-US", { maximumFractionDigits: 3 }),
-                debtPrice: debtGoldPrice.toLocaleString("en-US"),
-                payment: paymentAmount.toLocaleString("en-US"),
-                paymentPrice: paymentGoldPrice.toLocaleString("en-US"),
-                total: totalDebt.toLocaleString("en-US", { maximumFractionDigits: 3 }),
-                time: `${date} - ${time}`
+            let result = debtAmount / debtGoldPrice;
+            let entry = { 
+                type: "debt", 
+                amount: result, 
+                details: `${debtAmount.toLocaleString("en-US")} ÷ ${debtGoldPrice.toLocaleString("en-US")}` 
             };
 
             let debtHistory = JSON.parse(localStorage.getItem("debtHistory")) || [];
@@ -530,22 +603,68 @@
             }
             localStorage.setItem("debtHistory", JSON.stringify(debtHistory));
             updateDebtTable(debtHistory);
+
+            document.getElementById("debtAmount").value = "";
+            document.getElementById("debtGoldPrice").value = "";
         }
 
-        function updateDebtTable(debtHistory) {
-            let debtTable = document.getElementById("debtTable");
-            debtTable.innerHTML = "";
-            debtHistory.slice().reverse().forEach(item => {
-                let div = document.createElement("div");
-                div.textContent = `بدهی: ${item.debt} گرم | قیمت: ${item.debtPrice} تومان | پرداخت: ${item.payment} تومان | قیمت: ${item.paymentPrice} تومان | نتیجه: ${item.total} گرم | ${item.time}`;
-                debtTable.appendChild(div);
-            });
+        function registerPayment() {
+            let paymentAmount = parseFloat(document.getElementById("paymentAmount").value.replace(/,/g, "")) || 0;
+            let paymentGoldPrice = parseFloat(document.getElementById("paymentGoldPrice").value.replace(/,/g, "")) || 0;
+
+            if (paymentAmount <= 0 || paymentGoldPrice <= 0) {
+                alert("لطفاً مقادیر معتبر وارد کنید!");
+                return;
+            }
+
+            let result = paymentAmount / paymentGoldPrice;
+            let entry = { 
+                type: "payment", 
+                amount: result, 
+                details: `${paymentAmount.toLocaleString("en-US")} ÷ ${paymentGoldPrice.toLocaleString("en-US")}` 
+            };
+
+            let debtHistory = JSON.parse(localStorage.getItem("debtHistory")) || [];
+            debtHistory.push(entry);
+            if (debtHistory.length > 1000) {
+                debtHistory.shift();
+            }
+            localStorage.setItem("debtHistory", JSON.stringify(debtHistory));
+            updateDebtTable(debtHistory);
+
+            document.getElementById("paymentAmount").value = "";
+            document.getElementById("paymentGoldPrice").value = "";
         }
 
-        function clearDebtHistory() {
+        function clearDebtTable() {
             localStorage.removeItem("debtHistory");
             updateDebtTable([]);
-            alert("تاریخچه بدهی پاک شد!");
+        }
+
+        function updateDebtTable(history) {
+            let tableBody = document.getElementById("debtTableBody");
+            tableBody.innerHTML = "";
+            let total = 0;
+
+            history.forEach(item => {
+                let row = document.createElement("tr");
+                row.className = item.type === "debt" ? "debt-row" : "payment-row";
+                let amountCell = document.createElement("td");
+                amountCell.textContent = item.amount.toLocaleString("en-US");
+                let detailsCell = document.createElement("td");
+                detailsCell.className = "details";
+                detailsCell.textContent = item.details;
+                row.appendChild(amountCell);
+                row.appendChild(detailsCell);
+                tableBody.appendChild(row);
+
+                total += item.type === "debt" ? -item.amount : item.amount;
+            });
+
+            let totalResult = document.getElementById("totalResult");
+            totalResult.textContent = `نتیجه کلی: ${total < 0 ? "- " : ""}${Math.abs(total).toLocaleString("en-US")} گرم`;
+            totalResult.style.backgroundColor = total < 0 ? "#E53E3E" : total > 0 ? "#48BB78" : "#F7FAFC";
+            totalResult.style.color = total === 0 ? "#2C5282" : "white";
         }
 
         function calculateConvert() {
@@ -565,10 +684,31 @@
                 return;
             }
 
-            // تبدیل به طلای ۷۵۰ (عیار ۷۵۰ = ۷۵۰/۱۰۰۰)
             let result = (weight * karat) / 750;
             document.getElementById("convertResult").innerText = 
                 `نتیجه: ${result.toLocaleString("en-US", { maximumFractionDigits: 3 })} گرم (طلای ۷۵۰)`;
+        }
+
+        function calculateConvertPrice() {
+            let priceInput = document.getElementById("convertPrice").value.replace(/,/g, "");
+            let targetKaratInput = document.getElementById("convertTargetKarat").value.replace(/,/g, "");
+
+            if (!priceInput || !targetKaratInput) {
+                document.getElementById("convertPriceResult").innerText = "لطفاً همه کادرها را پر کنید!";
+                return;
+            }
+
+            let price = parseFloat(priceInput) || 0;
+            let targetKarat = parseFloat(targetKaratInput) || 0;
+
+            if (price <= 0 || targetKarat <= 0 || targetKarat > 1000) {
+                document.getElementById("convertPriceResult").innerText = "لطفاً مقادیر معتبر وارد کنید!";
+                return;
+            }
+
+            let result = price * (targetKarat / 750);
+            document.getElementById("convertPriceResult").innerText = 
+                `نتیجه: ${Math.round(result).toLocaleString("en-US")} تومان`;
         }
     </script>
     <script>
