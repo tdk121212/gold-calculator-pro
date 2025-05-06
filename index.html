@@ -13,11 +13,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Vazir:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Vazir', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Vazir', Arial, sans-serif;
             margin: 0;
             padding: 0;
             direction: rtl;
-            background-color: #F5F5F5; /* خاکستری روشن */
+            background-color: #f4f4f4; /* خاکستری تیره‌تر */
         }
         .hamburger {
             font-size: 30px;
@@ -26,7 +26,7 @@
             position: fixed;
             top: 10px;
             right: 10px;
-            color: #2C5282;
+            color: #333;
             z-index: 1000;
             background-color: rgba(255, 255, 255, 0.8);
             border-radius: 5px;
@@ -37,7 +37,7 @@
             position: fixed;
             top: 0;
             right: 0;
-            background-color: #2C5282;
+            background-color: #2c3e50;
             overflow-x: hidden;
             transition: 0.5s;
             z-index: 999;
@@ -49,7 +49,7 @@
             font-size: 30px;
             cursor: pointer;
             padding: 10px;
-            color: #E6F3FA;
+            color: #ecf0f1;
             text-align: right;
             display: none;
         }
@@ -60,11 +60,11 @@
             padding: 15px;
             text-decoration: none;
             font-size: 20px;
-            color: #E6F3FA;
+            color: #ecf0f1;
             display: block;
         }
         .menu a:hover {
-            background-color: #3B6899;
+            background-color: #34495e;
         }
         .content {
             padding: 20px;
@@ -75,126 +75,104 @@
             display: block;
         }
         .calculator {
-            margin-top: 20px;
+            margin-top: 50px;
             text-align: center;
             background-color: #fff;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             max-width: 450px;
             margin-left: auto;
             margin-right: auto;
         }
         .calculator h1 {
-            color: #2C5282;
-            font-size: 26px;
+            color: #2c3e50;
+            font-size: 24px;
             margin-bottom: 20px;
         }
         .calculator input {
             padding: 15px;
             margin: 10px 0;
-            width: 300px;
-            height: 50px;
-            font-size: 20px;
+            width: 280px;
+            font-size: 18px;
             text-align: left;
             direction: ltr;
             font-family: monospace;
-            border: 2px solid #2C5282;
-            border-radius: 8px;
-            background-color: #F7FAFC;
-            transition: border-color 0.3s;
-            box-sizing: border-box;
+            border: 1px solid #bdc3c7;
+            border-radius: 5px;
+            background-color: #ecf0f1;
         }
         .calculator input:focus {
-            border-color: #4299E1;
+            border-color: #3498db;
             outline: none;
             background-color: #fff;
         }
         #result, #mazneResult, #ounceResult, #convertResult, #convertPriceResult {
-            font-size: 22px;
+            font-size: 20px;
             margin-top: 20px;
-            padding: 12px;
-            background-color: #4299E1;
+            padding: 10px;
+            background-color: #27ae60;
             color: white;
-            border-radius: 8px;
+            border-radius: 5px;
             display: inline-block;
         }
         #history {
             margin-top: 20px;
-            max-height: 250px;
+            max-height: 200px;
             overflow-y: auto;
-            background-color: #F7FAFC;
+            background-color: #ecf0f1;
             padding: 10px;
-            border-radius: 8px;
+            border-radius: 5px;
             text-align: right;
             font-size: 14px;
-            color: #2C5282;
+            color: #2c3e50;
         }
         #history div {
             padding: 5px;
-            border-bottom: 1px solid #CBD5E0;
+            border-bottom: 1px solid #d5dadb;
         }
         #history::-webkit-scrollbar {
             width: 8px;
         }
         #history::-webkit-scrollbar-thumb {
-            background-color: #4299E1;
+            background-color: #3498db;
             border-radius: 4px;
         }
         button {
-            padding: 12px 24px;
-            font-size: 18px;
+            padding: 10px 20px;
+            font-size: 16px;
             margin-top: 10px;
             border: none;
-            border-radius: 8px;
+            border-radius: 5px;
             cursor: pointer;
-            background-color: #4299E1;
+            background-color: #3498db;
             color: white;
-            transition: opacity 0.3s;
         }
         button:hover {
             opacity: 0.9;
         }
-        .input-label {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            margin: 10px 0;
-        }
-        .input-label span {
-            font-size: 18px;
-            color: #2C5282;
-            width: 80px;
-            text-align: right;
-            flex-shrink: 0;
-        }
-        .input-label input {
-            flex: 1;
-            margin: 0;
-        }
         .debt-container, .payment-container {
             padding: 15px;
-            border-radius: 8px;
+            border-radius: 5px;
             margin-bottom: 20px;
             box-sizing: border-box;
         }
         .debt-container {
-            background-color: #FED7D7;
+            background-color: #ffe6e6;
         }
         .payment-container {
-            background-color: #C6F6D5;
+            background-color: #e6ffe6;
         }
         .debt-container button {
-            background-color: #E53E3E;
+            background-color: #e74c3c;
             color: white;
         }
         .payment-container button {
-            background-color: #48BB78;
+            background-color: #27ae60;
             color: white;
         }
         #clearTable {
-            background-color: #4299E1;
+            background-color: #3498db;
             color: white;
             margin-top: 20px;
         }
@@ -203,24 +181,24 @@
             border-collapse: collapse;
             margin-top: 20px;
             font-size: 14px;
-            background-color: #F7FAFC;
-            border-radius: 8px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
             overflow: hidden;
         }
         #debtTable th, #debtTable td {
             padding: 10px;
-            border: 1px solid #CBD5E0;
+            border: 1px solid #d5dadb;
             text-align: center;
         }
         #debtTable th {
-            background-color: #2C5282;
+            background-color: #2c3e50;
             color: white;
         }
         #debtTable .debt-row {
-            background-color: #FED7D7;
+            background-color: #ffcccc;
         }
         #debtTable .payment-row {
-            background-color: #C6F6D5;
+            background-color: #ccffcc;
         }
         #debtTable .details {
             direction: ltr;
@@ -228,9 +206,25 @@
         #totalResult {
             font-size: 18px;
             margin-top: 10px;
-            padding: 12px;
-            border-radius: 8px;
+            padding: 10px;
+            border-radius: 5px;
             display: inline-block;
+        }
+        .input-label {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        .input-label span {
+            margin-left: 10px;
+            font-size: 18px;
+            color: #2c3e50;
+            width: 80px;
+            text-align: right;
+        }
+        .input-label input {
+            flex: 1;
+            margin: 0;
         }
         @media screen and (max-width: 600px) {
             .calculator {
@@ -655,8 +649,8 @@
             });
             let totalResult = document.getElementById("totalResult");
             totalResult.textContent = `نتیجه کلی: ${total < 0 ? "- " : ""}${Math.abs(total).toLocaleString("en-US", { maximumFractionDigits: 3 })} گرم`;
-            totalResult.style.backgroundColor = total < 0 ? "#E53E3E" : total > 0 ? "#48BB78" : "#F7FAFC";
-            totalResult.style.color = total === 0 ? "#2C5282" : "white";
+            totalResult.style.backgroundColor = total < 0 ? "#e74c3c" : total > 0 ? "#27ae60" : "#ecf0f1";
+            totalResult.style.color = total === 0 ? "#2c3e50" : "white";
         }
 
         function calculateConvert() {
