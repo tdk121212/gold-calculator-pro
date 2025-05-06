@@ -167,7 +167,7 @@
             parts[1] = parts[1].substring(0, 3); // حداکثر ۳ رقم اعشار
         }
         value = parts[0] + (parts[1] !== undefined ? "." + parts[1] : "");
-        if (value === "" || value === ".") {
+        if (value === "." || value === "") {
             input.value = "";
             return;
         }
