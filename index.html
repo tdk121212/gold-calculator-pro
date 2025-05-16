@@ -119,8 +119,8 @@
             padding: 15px;
             margin: 10px 0;
             width: 280px;
-            font-size: 22px; /* افزایش اندازه فونت اعداد */
-            font-weight: bold; /* پررنگ کردن اعداد */
+            font-size: 22px;
+            font-weight: bold;
             text-align: left;
             direction: ltr;
             font-family: monospace;
@@ -133,13 +133,14 @@
             outline: none;
             background-color: #fff;
         }
-        #result, #mazneResult, #ounceResult, #convertResult, #convertPriceResult, #totalKaratResult {
-            font-size: 20px;
+        #result, #convertResult, #convertPriceResult, #totalKaratResult {
+            font-size: 24px; /* بزرگ‌تر کردن اندازه فونت */
+            font-weight: bold; /* پررنگ‌تر کردن */
+            color: #000000; /* رنگ مشکی */
             margin-top: 20px;
-            padding: 10px;
+            padding: 15px; /* بزرگ‌تر کردن پدینگ */
             background-color: #27ae60;
-            color: white;
-            border-radius: 5px;
+            border-radius: 8px; /* بزرگ‌تر کردن گوشه‌ها */
             display: inline-block;
         }
         #history, #totalKaratHistory {
@@ -243,8 +244,8 @@
         }
         .input-label span {
             margin-left: 10px;
-            font-size: 20px; /* افزایش اندازه فونت توضیحات */
-            font-weight: bold; /* پررنگ کردن توضیحات */
+            font-size: 20px;
+            font-weight: bold;
             color: #2c3e50;
             width: 80px;
             text-align: right;
@@ -263,7 +264,7 @@
                 max-width: 100%;
                 padding: 10px;
                 height: 40px;
-                font-size: 18px; /* اندازه فونت کوچیک‌تر در موبایل */
+                font-size: 18px;
                 font-weight: bold;
             }
             .input-label {
@@ -274,7 +275,7 @@
             }
             .input-label span {
                 width: 60px;
-                font-size: 16px; /* اندازه فونت کوچیک‌تر در موبایل */
+                font-size: 16px;
                 font-weight: bold;
             }
             .debt-container, .payment-container {
@@ -343,7 +344,7 @@
                 <span>وزن طلا</span>
                 <input type="text" inputmode="numeric" id="mazneWeight" placeholder="گرم" oninput="formatInput(this, true)" autocomplete="off">
             </div>
-            <p id="mazneResult">نتیجه: ۰ تومان</p>
+            <div id="history"></div>
         </div>
     </div>
 
@@ -363,7 +364,7 @@
                 <span>فی طلا</span>
                 <input type="text" inputmode="numeric" id="ounceGoldPrice" placeholder="تومان" oninput="formatInput(this, false); calculateOunceReverse()" autocomplete="off">
             </div>
-            <p id="ounceResult">نتیجه: ۰ تومان</p>
+            <div id="history"></div>
         </div>
     </div>
 
@@ -520,11 +521,9 @@
             document.getElementById("goldUnitPrice").value = "";
             document.getElementById("mazneAmount").value = "";
             document.getElementById("mazneWeight").value = "";
-            document.getElementById("mazneResult").innerText = "نتیجه: ۰ تومان";
             document.getElementById("ouncePrice").value = "";
             document.getElementById("dollarPrice").value = "";
             document.getElementById("ounceGoldPrice").value = "";
-            document.getElementById("ounceResult").innerText = "نتیجه: ۰ تومان";
             document.getElementById("debtAmount").value = "";
             document.getElementById("debtGoldPrice").value = "";
             document.getElementById("paymentAmount").value = "";
@@ -607,23 +606,19 @@
         function calculateMazne() {
             let maznePrice = parseFloat(document.getElementById("maznePrice").value.replace(/,/g, "")) || 0;
             if (maznePrice <= 0) {
-                document.getElementById("mazneResult").innerText = "لطفاً مقدار معتبر وارد کنید!";
                 return;
             }
             let result = Math.round(((maznePrice / 4.6083) * 750) / 705);
             document.getElementById("goldUnitPrice").value = result.toLocaleString("en-US");
-            document.getElementById("mazneResult").innerText = `نتیجه: ${result.toLocaleString("en-US")} تومان`;
         }
 
         function calculateMazneReverse() {
             let goldUnitPrice = parseFloat(document.getElementById("goldUnitPrice").value.replace(/,/g, "")) || 0;
             if (goldUnitPrice <= 0) {
-                document.getElementById("mazneResult").innerText = "لطفاً مقدار معتبر وارد کنید!";
                 return;
             }
             let result = Math.round(((goldUnitPrice * 705) / 750) * 4.6083);
             document.getElementById("maznePrice").value = result.toLocaleString("en-US");
-            document.getElementById("mazneResult").innerText = `نتیجه: ${result.toLocaleString("en-US")} تومان`;
         }
 
         function calculateMazneWeight() {
@@ -641,24 +636,20 @@
             let ouncePrice = parseFloat(document.getElementById("ouncePrice").value.replace(/,/g, "")) || 0;
             let dollarPrice = parseFloat(document.getElementById("dollarPrice").value.replace(/,/g, "")) || 0;
             if (ouncePrice <= 0 || dollarPrice <= 0) {
-                document.getElementById("ounceResult").innerText = "لطفاً مقادیر معتبر وارد کنید!";
                 return;
             }
             let result = (((ouncePrice / 31.103) * 750) / 999.99) * dollarPrice;
             document.getElementById("ounceGoldPrice").value = Math.round(result).toLocaleString("en-US");
-            document.getElementById("ounceResult").innerText = `نتیجه: ${Math.round(result).toLocaleString("en-US")} تومان`;
         }
 
         function calculateOunceReverse() {
             let dollarPrice = parseFloat(document.getElementById("dollarPrice").value.replace(/,/g, "")) || 0;
             let ounceGoldPrice = parseFloat(document.getElementById("ounceGoldPrice").value.replace(/,/g, "")) || 0;
             if (ounceGoldPrice <= 0 || dollarPrice <= 0) {
-                document.getElementById("ounceResult").innerText = "لطفاً مقادیر معتبر وارد کنید!";
                 return;
             }
             let result = ((ounceGoldPrice * 999.99) / 750) * 31.103 / dollarPrice;
             document.getElementById("ouncePrice").value = Math.round(result).toLocaleString("en-US");
-            document.getElementById("ounceResult").innerText = `نتیجه: ${Math.round(result).toLocaleString("en-US")} دلار`;
         }
 
         function registerDebt() {
