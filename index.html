@@ -10,10 +10,10 @@
     <link rel="manifest" href="./manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link href="https://fonts.googleapis.com/css2?family=Vazir:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Vazir', Arial, sans-serif;
+            font-family: 'Vazirmatn', Arial, sans-serif;
             margin: 0;
             padding: 0;
             direction: rtl;
@@ -30,6 +30,10 @@
             z-index: 1000;
             background-color: rgba(255, 255, 255, 0.8);
             border-radius: 5px;
+            transition: transform 0.3s ease;
+        }
+        .hamburger:hover {
+            transform: scale(1.1);
         }
         .menu {
             height: 100%;
@@ -37,10 +41,11 @@
             position: fixed;
             top: 0;
             right: 0;
-            background-color: #2c3e50;
+            background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%); /* گرادیانت زیبا */
             overflow-x: hidden;
-            transition: 0.5s;
+            transition: width 0.5s ease;
             z-index: 999;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3); /* سایه برای عمق */
         }
         .menu.open {
             width: 250px;
@@ -48,23 +53,43 @@
         .menu .close-btn {
             font-size: 30px;
             cursor: pointer;
-            padding: 10px;
+            padding: 15px;
             color: #ecf0f1;
             text-align: right;
             display: none;
+            transition: color 0.3s ease;
+        }
+        .menu .close-btn:hover {
+            color: #3498db;
         }
         .menu.open .close-btn {
             display: block;
         }
         .menu a {
-            padding: 15px;
+            padding: 15px 20px;
             text-decoration: none;
             font-size: 20px;
             color: #ecf0f1;
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         .menu a:hover {
-            background-color: #34495e;
+            background-color: #3498db;
+            color: #fff;
+            padding-right: 25px; /* جابجایی کوچک برای انیمیشن */
+            box-shadow: inset 4px 0 0 #ecf0f1; /* خط کناری برای جلوه */
+        }
+        .menu a::before {
+            content: "➔";
+            font-size: 16px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .menu a:hover::before {
+            opacity: 1;
         }
         .content {
             padding: 20px;
