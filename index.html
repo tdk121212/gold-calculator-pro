@@ -865,7 +865,7 @@
             });
 
             let finalKarat = totalWeight > 0 ? Math.round(weightedKaratSum / totalWeight) : 0;
-            document.getElementById("totalKaratResult").innerText = `نتیجه: ${finalKarat.toLocaleString("en-US")} (عیار نهایی)`;
+            document.getElementById("totalKaratResult").innerText = `نتیجه: ${finalKarat.toLocaleString("en-US")} (عیار نهایی) | وزن مجموع: ${totalWeight.toLocaleString("en-US", { maximumFractionDigits: 3 })} گرم`;
         }
 
         function clearTotalKaratTable() {
