@@ -314,10 +314,11 @@
                 background-color: #3498db;
                 border-radius: 4px;
             }
-                        tgju[type="ticker"] {
-                min-width: 600px !important;
-                display: inline-block !important;
-            }
+        }
+    
+        tgju[type="ticker"] {
+            min-width: 140px !important;
+            display: inline-block !important;
         }
     </style>
 </head>
@@ -336,16 +337,17 @@
 
     <!-- صفحه اصلی -->
     <div id="home" class="content active">
-        <div class="ticker-container" style="margin-top: 10px;">
-            <tgju
-            type="ticker"
-            items="398096,137121,137120,137203"
-            columns="dot"
-            token="webservice"
-            style="min-width: 600px; display: inline-block;"  
-          ></tgju>
-            <script src="https://api.tgju.org/v1/widget/v2" defer></script>
-        </div>
+        
+
+<div class="ticker-container" style="margin-top: 10px; display: flex; overflow-x: auto; white-space: nowrap; gap: 10px;">
+    <tgju type="ticker" items="398096" columns="dot" token="webservice"></tgju>
+    <tgju type="ticker" items="137121" columns="dot" token="webservice"></tgju>
+    <tgju type="ticker" items="137120" columns="dot" token="webservice"></tgju>
+    <tgju type="ticker" items="137203" columns="dot" token="webservice"></tgju>
+    <script src="https://api.tgju.org/v1/widget/v2" defer></script>
+</div>
+
+
         <div class="calculator-container">
             <div class="calculator">
                 <h1>GoldCalcPro</h1>
