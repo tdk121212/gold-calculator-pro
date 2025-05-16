@@ -104,16 +104,18 @@
         #home {
             padding-bottom: 100px; /* فضای اضافی برای کیبورد */
         }
+        .calculator-container {
+            margin-top: 10px; /* کاهش فاصله کل بخش از بالا */
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+        }
         .calculator {
-            margin-top: 20px; /* کاهش فاصله از 50px به 20px */
             text-align: center;
             background-color: #fff;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 450px;
-            margin-left: auto;
-            margin-right: auto;
         }
         .calculator h1 {
             color: #2c3e50;
@@ -260,8 +262,10 @@
             margin: 0;
         }
         @media screen and (max-width: 600px) {
-            .calculator {
+            .calculator-container {
                 max-width: 100%;
+            }
+            .calculator {
                 padding: 10px;
             }
             .calculator input {
@@ -315,150 +319,162 @@
             <tgju type="ticker-tap" items="398096,398097,137121,391293,137203,137205" columns="dot" speed="30" token="webservice"></tgju>
             <script src="https://api.tgju.org/v1/widget/v2" defer></script>
         </div>
-        <div class="calculator">
-            <h1>GoldCalcPro</h1>
-            <div class="input-label">
-                <span>قیمت طلا</span>
-                <input type="text" inputmode="numeric" id="goldPrice" placeholder="تومان" oninput="formatInput(this, false); calculateGold()" autocomplete="off">
+        <div class="calculator-container">
+            <div class="calculator">
+                <h1>GoldCalcPro</h1>
+                <div class="input-label">
+                    <span>قیمت طلا</span>
+                    <input type="text" inputmode="numeric" id="goldPrice" placeholder="تومان" oninput="formatInput(this, false); calculateGold()" autocomplete="off">
+                </div>
+                <div class="input-label">
+                    <span>وزن طلا</span>
+                    <input type="text" inputmode="numeric" id="goldWeight" placeholder="گرم" oninput="formatInput(this, true); calculateGold()" autocomplete="off">
+                </div>
+                <div class="input-label">
+                    <span>اجرت طلا</span>
+                    <input type="text" inputmode="numeric" id="feePercent" placeholder="درصد" oninput="formatInput(this, false); calculateGold()" autocomplete="off">
+                </div>
+                <p id="result">نتیجه: ۰ تومان</p>
+                <div id="history"></div>
             </div>
-            <div class="input-label">
-                <span>وزن طلا</span>
-                <input type="text" inputmode="numeric" id="goldWeight" placeholder="گرم" oninput="formatInput(this, true); calculateGold()" autocomplete="off">
-            </div>
-            <div class="input-label">
-                <span>اجرت طلا</span>
-                <input type="text" inputmode="numeric" id="feePercent" placeholder="درصد" oninput="formatInput(this, false); calculateGold()" autocomplete="off">
-            </div>
-            <p id="result">نتیجه: ۰ تومان</p>
-            <div id="history"></div>
         </div>
     </div>
 
     <!-- صفحه مظنه -->
     <div id="mazne" class="content">
-        <div class="calculator">
-            <h1>محاسبه مظنه</h1>
-            <div class="input-label">
-                <span>مظنه</span>
-                <input type="text" inputmode="numeric" id="maznePrice" placeholder="تومان" oninput="formatInput(this, false); calculateMazne()" autocomplete="off">
+        <div class="calculator-container">
+            <div class="calculator">
+                <h1>محاسبه مظنه</h1>
+                <div class="input-label">
+                    <span>مظنه</span>
+                    <input type="text" inputmode="numeric" id="maznePrice" placeholder="تومان" oninput="formatInput(this, false); calculateMazne()" autocomplete="off">
+                </div>
+                <div class="input-label">
+                    <span>فی طلا</span>
+                    <input type="text" inputmode="numeric" id="goldUnitPrice" placeholder="تومان" oninput="formatInput(this, false); calculateMazneReverse()" autocomplete="off">
+                </div>
+                <div class="input-label">
+                    <span>مبلغ</span>
+                    <input type="text" inputmode="numeric" id="mazneAmount" placeholder="تومان" oninput="formatInput(this, false); calculateMazneWeight()" autocomplete="off">
+                </div>
+                <div class="input-label">
+                    <span>وزن طلا</span>
+                    <input type="text" inputmode="numeric" id="mazneWeight" placeholder="گرم" oninput="formatInput(this, true)" autocomplete="off">
+                </div>
+                <div id="history"></div>
             </div>
-            <div class="input-label">
-                <span>فی طلا</span>
-                <input type="text" inputmode="numeric" id="goldUnitPrice" placeholder="تومان" oninput="formatInput(this, false); calculateMazneReverse()" autocomplete="off">
-            </div>
-            <div class="input-label">
-                <span>مبلغ</span>
-                <input type="text" inputmode="numeric" id="mazneAmount" placeholder="تومان" oninput="formatInput(this, false); calculateMazneWeight()" autocomplete="off">
-            </div>
-            <div class="input-label">
-                <span>وزن طلا</span>
-                <input type="text" inputmode="numeric" id="mazneWeight" placeholder="گرم" oninput="formatInput(this, true)" autocomplete="off">
-            </div>
-            <div id="history"></div>
         </div>
     </div>
 
     <!-- صفحه انس -->
     <div id="ounce" class="content">
-        <div class="calculator">
-            <h1>محاسبه انس</h1>
-            <div class="input-label">
-                <span>قیمت انس</span>
-                <input type="text" inputmode="numeric" id="ouncePrice" placeholder="دلار" oninput="formatInput(this, false); calculateOunce()" autocomplete="off">
+        <div class="calculator-container">
+            <div class="calculator">
+                <h1>محاسبه انس</h1>
+                <div class="input-label">
+                    <span>قیمت انس</span>
+                    <input type="text" inputmode="numeric" id="ouncePrice" placeholder="دلار" oninput="formatInput(this, false); calculateOunce()" autocomplete="off">
+                </div>
+                <div class="input-label">
+                    <span>قیمت دلار</span>
+                    <input type="text" inputmode="numeric" id="dollarPrice" placeholder="تومان" oninput="formatInput(this, false); calculateOunce()" autocomplete="off">
+                </div>
+                <div class="input-label">
+                    <span>فی طلا</span>
+                    <input type="text" inputmode="numeric" id="ounceGoldPrice" placeholder="تومان" oninput="formatInput(this, false); calculateOunceReverse()" autocomplete="off">
+                </div>
+                <div id="history"></div>
             </div>
-            <div class="input-label">
-                <span>قیمت دلار</span>
-                <input type="text" inputmode="numeric" id="dollarPrice" placeholder="تومان" oninput="formatInput(this, false); calculateOunce()" autocomplete="off">
-            </div>
-            <div class="input-label">
-                <span>فی طلا</span>
-                <input type="text" inputmode="numeric" id="ounceGoldPrice" placeholder="تومان" oninput="formatInput(this, false); calculateOunceReverse()" autocomplete="off">
-            </div>
-            <div id="history"></div>
         </div>
     </div>
 
     <!-- صفحه محاسبه بدهی مشتری -->
     <div id="debt" class="content">
-        <div class="calculator">
-            <h1>محاسبه بدهی مشتری</h1>
-            <div class="debt-container">
-                <div class="input-label">
-                    <span>بدهی</span>
-                    <input type="text" inputmode="numeric" id="debtAmount" placeholder="تومان" oninput="formatInput(this, false)" autocomplete="off">
+        <div class="calculator-container">
+            <div class="calculator">
+                <h1>محاسبه بدهی مشتری</h1>
+                <div class="debt-container">
+                    <div class="input-label">
+                        <span>بدهی</span>
+                        <input type="text" inputmode="numeric" id="debtAmount" placeholder="تومان" oninput="formatInput(this, false)" autocomplete="off">
+                    </div>
+                    <div class="input-label">
+                        <span>فی طلا</span>
+                        <input type="text" inputmode="numeric" id="debtGoldPrice" placeholder="تومان" oninput="formatInput(this, false)" autocomplete="off">
+                    </div>
+                    <button onclick="registerDebt()">ثبت</button>
                 </div>
-                <div class="input-label">
-                    <span>فی طلا</span>
-                    <input type="text" inputmode="numeric" id="debtGoldPrice" placeholder="تومان" oninput="formatInput(this, false)" autocomplete="off">
+                <div class="payment-container">
+                    <div class="input-label">
+                        <span>پرداخت</span>
+                        <input type="text" inputmode="numeric" id="paymentAmount" placeholder="تومان" oninput="formatInput(this, false)" autocomplete="off">
+                    </div>
+                    <div class="input-label">
+                        <span>فی طلا</span>
+                        <input type="text" inputmode="numeric" id="paymentGoldPrice" placeholder="تومان" oninput="formatInput(this, false)" autocomplete="off">
+                    </div>
+                    <button onclick="registerPayment()">ثبت</button>
                 </div>
-                <button onclick="registerDebt()">ثبت</button>
+                <table id="debtTable">
+                    <thead>
+                        <tr>
+                            <th>مقدار (گرم)</th>
+                            <th>جزئیات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="debtTableBody"></tbody>
+                </table>
+                <p id="totalResult">نتیجه کلی: ۰ گرم</p>
+                <button id="clearTable" onclick="clearDebtTable()">پاک کردن جدول</button>
             </div>
-            <div class="payment-container">
-                <div class="input-label">
-                    <span>پرداخت</span>
-                    <input type="text" inputmode="numeric" id="paymentAmount" placeholder="تومان" oninput="formatInput(this, false)" autocomplete="off">
-                </div>
-                <div class="input-label">
-                    <span>فی طلا</span>
-                    <input type="text" inputmode="numeric" id="paymentGoldPrice" placeholder="تومان" oninput="formatInput(this, false)" autocomplete="off">
-                </div>
-                <button onclick="registerPayment()">ثبت</button>
-            </div>
-            <table id="debtTable">
-                <thead>
-                    <tr>
-                        <th>مقدار (گرم)</th>
-                        <th>جزئیات</th>
-                    </tr>
-                </thead>
-                <tbody id="debtTableBody"></tbody>
-            </table>
-            <p id="totalResult">نتیجه کلی: ۰ گرم</p>
-            <button id="clearTable" onclick="clearDebtTable()">پاک کردن جدول</button>
         </div>
     </div>
 
     <!-- صفحه تبدیل عیار -->
     <div id="convert" class="content">
-        <div class="calculator">
-            <h1>تبدیل عیار</h1>
-            <div class="input-label">
-                <span>وزن طلا</span>
-                <input type="text" inputmode="numeric" id="convertWeight" placeholder="گرم" oninput="formatInput(this, true); calculateConvert()" autocomplete="off">
+        <div class="calculator-container">
+            <div class="calculator">
+                <h1>تبدیل عیار</h1>
+                <div class="input-label">
+                    <span>وزن طلا</span>
+                    <input type="text" inputmode="numeric" id="convertWeight" placeholder="گرم" oninput="formatInput(this, true); calculateConvert()" autocomplete="off">
+                </div>
+                <div class="input-label">
+                    <span>عیار طلا</span>
+                    <input type="text" inputmode="numeric" id="convertKarat" placeholder="مثلاً ۵۸۵" oninput="formatInput(this, false); calculateConvert()" autocomplete="off">
+                </div>
+                <p id="convertResult">نتیجه: ۰ گرم (طلای ۷۵۰)</p>
+                <div class="input-label">
+                    <span>قیمت طلا</span>
+                    <input type="text" inputmode="numeric" id="convertPrice" placeholder="تومان (عیار ۷۵۰)" oninput="formatInput(this, false); calculateConvertPrice()" autocomplete="off">
+                </div>
+                <div class="input-label">
+                    <span>عیار مقصد</span>
+                    <input type="text" inputmode="numeric" id="convertTargetKarat" placeholder="مثلاً ۵۸۵" oninput="formatInput(this, false); calculateConvertPrice()" autocomplete="off">
+                </div>
+                <p id="convertPriceResult">نتیجه: ۰ تومان</p>
             </div>
-            <div class="input-label">
-                <span>عیار طلا</span>
-                <input type="text" inputmode="numeric" id="convertKarat" placeholder="مثلاً ۵۸۵" oninput="formatInput(this, false); calculateConvert()" autocomplete="off">
-            </div>
-            <p id="convertResult">نتیجه: ۰ گرم (طلای ۷۵۰)</p>
-            <div class="input-label">
-                <span>قیمت طلا</span>
-                <input type="text" inputmode="numeric" id="convertPrice" placeholder="تومان (عیار ۷۵۰)" oninput="formatInput(this, false); calculateConvertPrice()" autocomplete="off">
-            </div>
-            <div class="input-label">
-                <span>عیار مقصد</span>
-                <input type="text" inputmode="numeric" id="convertTargetKarat" placeholder="مثلاً ۵۸۵" oninput="formatInput(this, false); calculateConvertPrice()" autocomplete="off">
-            </div>
-            <p id="convertPriceResult">نتیجه: ۰ تومان</p>
         </div>
     </div>
 
     <!-- صفحه محاسبه عیار مجموع -->
     <div id="totalKarat" class="content">
-        <div class="calculator">
-            <h1>محاسبه عیار مجموع</h1>
-            <div class="input-label">
-                <span>وزن طلا</span>
-                <input type="text" inputmode="numeric" id="totalKaratWeight" placeholder="گرم" oninput="formatInput(this, true)" autocomplete="off">
+        <div class="calculator-container">
+            <div class="calculator">
+                <h1>محاسبه عیار مجموع</h1>
+                <div class="input-label">
+                    <span>وزن طلا</span>
+                    <input type="text" inputmode="numeric" id="totalKaratWeight" placeholder="گرم" oninput="formatInput(this, true)" autocomplete="off">
+                </div>
+                <div class="input-label">
+                    <span>عیار طلا</span>
+                    <input type="text" inputmode="numeric" id="totalKaratValue" placeholder="مثلاً ۷۵۰" oninput="formatInput(this, false)" autocomplete="off">
+                </div>
+                <button onclick="registerTotalKarat()">ثبت</button>
+                <div id="totalKaratHistory"></div>
+                <p id="totalKaratResult">نتیجه: ۰ (عیار نهایی)</p>
+                <button id="clearTotalKaratTable" onclick="clearTotalKaratTable()">پاک کردن لیست</button>
             </div>
-            <div class="input-label">
-                <span>عیار طلا</span>
-                <input type="text" inputmode="numeric" id="totalKaratValue" placeholder="مثلاً ۷۵۰" oninput="formatInput(this, false)" autocomplete="off">
-            </div>
-            <button onclick="registerTotalKarat()">ثبت</button>
-            <div id="totalKaratHistory"></div>
-            <p id="totalKaratResult">نتیجه: ۰ (عیار نهایی)</p>
-            <button id="clearTotalKaratTable" onclick="clearTotalKaratTable()">پاک کردن لیست</button>
         </div>
     </div>
 
