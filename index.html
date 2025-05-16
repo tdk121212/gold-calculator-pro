@@ -5,7 +5,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>GoldCalcPro</title>
     <link rel="manifest" href="./manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -95,9 +95,14 @@
             padding: 20px;
             padding-top: 60px;
             display: none;
+            position: relative;
+            min-height: calc(100vh - 60px);
         }
         .content.active {
             display: block;
+        }
+        #home {
+            padding-bottom: 100px; /* فضای اضافی برای کیبورد */
         }
         .calculator {
             margin-top: 50px;
@@ -306,7 +311,7 @@
 
     <!-- صفحه اصلی -->
     <div id="home" class="content active">
-        <div style="margin-top: 20px; max-width: 100%; overflow-x: auto;">
+        <div style="margin-top: 10px; max-width: 100%; overflow-x: auto;">
             <tgju type="ticker-tap" items="398096,398097,137121,391293,137203,137205" columns="dot" speed="30" token="webservice"></tgju>
             <script src="https://api.tgju.org/v1/widget/v2" defer></script>
         </div>
@@ -821,6 +826,16 @@
             localStorage.removeItem("totalKaratHistory");
             updateTotalKaratTable([]);
         }
+
+        // تنظیم موقعیت صفحه هنگام باز شدن کیبورد
+        window.addEventListener('resize', function() {
+            const activeInput = document.activeElement;
+            if (activeInput && (activeInput.tagName === 'INPUT' || activeInput.tagName === 'TEXTAREA')) {
+                setTimeout(() => {
+                    activeInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 300);
+            }
+        });
     </script>
     <script>
         if ('serviceWorker' in navigator) {
