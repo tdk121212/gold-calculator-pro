@@ -303,7 +303,9 @@
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch; /* اسکرول روان توی iOS */
                 scrollbar-width: thin; /* اسکرول بار باریک */
-                min-height: 30px; /* حداقل ارتفاع برای جلوگیری از لودینگ نامرئی */
+                min-height: 30px; /* حداقل ارتفاع */
+                white-space: nowrap; /* جلوگیری از شکستن خط */
+                max-width: 100vw; /* عرض کامل صفحه */
             }
             .ticker-container::-webkit-scrollbar {
                 height: 8px;
@@ -335,7 +337,7 @@
                 type="ticker-tap"
                 items="398096,137121,391293,137203,137138"
                 columns="dot"
-                speed="60"
+                speed="25"
                 token="webservice"
             ></tgju>
             <script src="https://api.tgju.org/v1/widget/v2" defer></script>
