@@ -107,7 +107,7 @@
             outline: none;
             background-color: #fff;
         }
-        #result, #mazneResult, #ounceResult, #convertResult, #convertPriceResult {
+        #result, #mazneResult, #ounceResult, #convertResult, #convertPriceResult, #totalKaratResult {
             font-size: 20px;
             margin-top: 20px;
             padding: 10px;
@@ -116,7 +116,7 @@
             border-radius: 5px;
             display: inline-block;
         }
-        #history {
+        #history, #totalKaratHistory {
             margin-top: 20px;
             max-height: 200px;
             overflow-y: auto;
@@ -127,14 +127,14 @@
             font-size: 14px;
             color: #2c3e50;
         }
-        #history div {
+        #history div, #totalKaratHistory div {
             padding: 5px;
             border-bottom: 1px solid #d5dadb;
         }
-        #history::-webkit-scrollbar {
+        #history::-webkit-scrollbar, #totalKaratHistory::-webkit-scrollbar {
             width: 8px;
         }
-        #history::-webkit-scrollbar-thumb {
+        #history::-webkit-scrollbar-thumb, #totalKaratHistory::-webkit-scrollbar-thumb {
             background-color: #3498db;
             border-radius: 4px;
         }
@@ -171,7 +171,7 @@
             background-color: #27ae60;
             color: white;
         }
-        #clearTable {
+        #clearTable, #clearTotalKaratTable {
             background-color: #3498db;
             color: white;
             margin-top: 20px;
@@ -270,6 +270,7 @@
         <a href="#" onclick="showPage('ounce')">انس</a>
         <a href="#" onclick="showPage('debt')">محاسبه بدهی مشتری</a>
         <a href="#" onclick="showPage('convert')">تبدیل عیار</a>
+        <a href="#" onclick="showPage('totalKarat')">محاسبه عیار مجموع</a>
     </div>
 
     <!-- صفحه اصلی -->
@@ -387,7 +388,7 @@
             </div>
             <div class="input-label">
                 <span>عیار طلا</span>
-                <input type="text" inputmode="numeric" id="convertKarat" placeholder="مثلاً ۸۷۵" oninput="formatInput(this, false); calculateConvert()" autocomplete="off">
+                <input type="text" inputmode="numeric" id="convertKarat" placeholder="مثلاً ۵۸۵" oninput="formatInput(this, false); calculateConvert()" autocomplete="off">
             </div>
             <p id="convertResult">نتیجه: ۰ گرم (طلای ۷۵۰)</p>
             <div class="input-label">
@@ -396,9 +397,28 @@
             </div>
             <div class="input-label">
                 <span>عیار مقصد</span>
-                <input type="text" inputmode="numeric" id="convertTargetKarat" placeholder="مثلاً ۸۷۵" oninput="formatInput(this, false); calculateConvertPrice()" autocomplete="off">
+                <input type="text" inputmode="numeric" id="convertTargetKarat" placeholder="مثلاً ۵۸۵" oninput="formatInput(this, false); calculateConvertPrice()" autocomplete="off">
             </div>
             <p id="convertPriceResult">نتیجه: ۰ تومان</p>
+        </div>
+    </div>
+
+    <!-- صفحه محاسبه عیار مجموع -->
+    <div id="totalKarat" class="content">
+        <div class="calculator">
+            <h1>محاسبه عیار مجموع</h1>
+            <div class="input-label">
+                <span>وزن طلا</span>
+                <input type="text" inputmode="numeric" id="totalKaratWeight" placeholder="گرم" oninput="formatInput(this, true)" autocomplete="off">
+            </div>
+            <div class="input-label">
+                <span>عیار طلا</span>
+                <input type="text" inputmode="numeric" id="totalKaratValue" placeholder="مثلاً ۷۵۰" oninput="formatInput(this, false)" autocomplete="off">
+            </div>
+            <button onclick="registerTotalKarat()">ثبت</button>
+            <div id="totalKaratHistory"></div>
+            <p id="totalKaratResult">نتیجه: ۰ (عیار نهایی)</p>
+            <button id="clearTotalKaratTable" onclick="clearTotalKaratTable()">پاک کردن لیست</button>
         </div>
     </div>
 
@@ -435,17 +455,14 @@
             let value = input.value.replace(/[^0-9.]/g, ""); // فقط اعداد و نقطه
             let parts = value.split(".");
             if (parts.length > 2) {
-                // اگر چند نقطه وجود داشته باشه، فقط اولین نقطه رو نگه می‌داریم
                 value = parts[0] + "." + parts.slice(1).join("");
                 parts = value.split(".");
             }
 
             if (allowDecimals && parts[1] !== undefined) {
-                // برای فیلدهای وزن، اعشار رو تا 3 رقم نگه می‌داریم
                 parts[1] = parts[1].substring(0, 3);
                 value = parts[0] + "." + parts[1];
             } else {
-                // برای بقیه فیلدها، فقط عدد صحیح
                 value = parts[0];
             }
 
@@ -455,7 +472,7 @@
             }
 
             let numParts = value.split(".");
-            let integerPart = numParts[0].replace(/^0+/, "") || "0"; // حذف صفرهای اول
+            let integerPart = numParts[0].replace(/^0+/, "") || "0";
             let formatted = Number(integerPart).toLocaleString("en-US");
 
             if (allowDecimals && numParts[1] !== undefined) {
@@ -490,11 +507,16 @@
             document.getElementById("convertPrice").value = "";
             document.getElementById("convertTargetKarat").value = "";
             document.getElementById("convertPriceResult").innerText = "نتیجه: ۰ تومان";
+            document.getElementById("totalKaratWeight").value = "";
+            document.getElementById("totalKaratValue").value = "";
+            document.getElementById("totalKaratResult").innerText = "نتیجه: ۰ (عیار نهایی)";
 
             let history = JSON.parse(localStorage.getItem("goldCalcHistory")) || [];
             updateHistory(history);
             let debtHistory = JSON.parse(localStorage.getItem("debtHistory")) || [];
             updateDebtTable(debtHistory);
+            let totalKaratHistory = JSON.parse(localStorage.getItem("totalKaratHistory")) || [];
+            updateTotalKaratTable(totalKaratHistory);
         };
 
         function calculateGold() {
@@ -706,6 +728,65 @@
             }
             let result = price * (targetKarat / 750);
             document.getElementById("convertPriceResult").innerText = `نتیجه: ${Math.round(result).toLocaleString("en-US")} تومان`;
+        }
+
+        function registerTotalKarat() {
+            let weightInput = document.getElementById("totalKaratWeight").value.replace(/,/g, "");
+            let karatInput = document.getElementById("totalKaratValue").value.replace(/,/g, "");
+
+            if (!weightInput || !karatInput) {
+                alert("لطفاً همه کادرها را پر کنید!");
+                return;
+            }
+
+            let weight = parseFloat(weightInput) || 0;
+            let karat = parseFloat(karatInput) || 0;
+
+            if (weight <= 0 || karat <= 0 || karat > 1000) {
+                alert("لطفاً مقادیر معتبر (بزرگ‌تر از صفر و عیار کمتر از ۱۰۰۰) وارد کنید!");
+                return;
+            }
+
+            let entry = {
+                weight: weight,
+                karat: karat,
+                display: `وزن: ${weight.toLocaleString("en-US", { maximumFractionDigits: 3 })} گرم | عیار: ${karat.toLocaleString("en-US")}`
+            };
+
+            let totalKaratHistory = JSON.parse(localStorage.getItem("totalKaratHistory")) || [];
+            totalKaratHistory.push(entry);
+            if (totalKaratHistory.length > 1000) totalKaratHistory.shift();
+            localStorage.setItem("totalKaratHistory", JSON.stringify(totalKaratHistory));
+            updateTotalKaratTable(totalKaratHistory);
+
+            document.getElementById("totalKaratWeight").value = "";
+            document.getElementById("totalKaratValue").value = "";
+        }
+
+        function updateTotalKaratTable(history) {
+            let historyDiv = document.getElementById("totalKaratHistory");
+            historyDiv.innerHTML = "";
+            history.slice().reverse().forEach(item => {
+                let div = document.createElement("div");
+                div.textContent = item.display;
+                historyDiv.appendChild(div);
+            });
+
+            let totalWeight = 0;
+            let weightedKaratSum = 0;
+
+            history.forEach(item => {
+                totalWeight += item.weight;
+                weightedKaratSum += item.weight * item.karat;
+            });
+
+            let finalKarat = totalWeight > 0 ? Math.round(weightedKaratSum / totalWeight) : 0;
+            document.getElementById("totalKaratResult").innerText = `نتیجه: ${finalKarat.toLocaleString("en-US")} (عیار نهایی)`;
+        }
+
+        function clearTotalKaratTable() {
+            localStorage.removeItem("totalKaratHistory");
+            updateTotalKaratTable([]);
         }
     </script>
     <script>
