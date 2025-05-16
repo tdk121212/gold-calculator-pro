@@ -134,13 +134,13 @@
             background-color: #fff;
         }
         #result, #convertResult, #convertPriceResult, #totalKaratResult {
-            font-size: 24px; /* بزرگ‌تر کردن اندازه فونت */
-            font-weight: bold; /* پررنگ‌تر کردن */
-            color: #000000; /* رنگ مشکی */
+            font-size: 24px;
+            font-weight: bold;
+            color: #000000;
             margin-top: 20px;
-            padding: 15px; /* بزرگ‌تر کردن پدینگ */
+            padding: 15px;
             background-color: #27ae60;
-            border-radius: 8px; /* بزرگ‌تر کردن گوشه‌ها */
+            border-radius: 8px;
             display: inline-block;
         }
         #history, #totalKaratHistory {
@@ -301,6 +301,7 @@
         <a href="#" onclick="showPage('debt')">محاسبه بدهی مشتری</a>
         <a href="#" onclick="showPage('convert')">تبدیل عیار</a>
         <a href="#" onclick="showPage('totalKarat')">محاسبه عیار مجموع</a>
+        <a href="#" onclick="showPage('charts')">نمودار قیمت‌ها</a>
     </div>
 
     <!-- صفحه اصلی -->
@@ -449,6 +450,14 @@
             <div id="totalKaratHistory"></div>
             <p id="totalKaratResult">نتیجه: ۰ (عیار نهایی)</p>
             <button id="clearTotalKaratTable" onclick="clearTotalKaratTable()">پاک کردن لیست</button>
+        </div>
+    </div>
+
+    <!-- صفحه نمودار قیمت‌ها -->
+    <div id="charts" class="content">
+        <div style="margin-top: 20px; max-width: 600px; margin-left: auto; margin-right: auto;">
+            <tgju type="market-overview" items="137121,391293,137138,137203" columns="dot" token="webservice"></tgju>
+            <script src="https://api.tgju.org/v1/widget/v2" defer></script>
         </div>
     </div>
 
