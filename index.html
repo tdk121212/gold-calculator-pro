@@ -297,6 +297,20 @@
                 padding: 10px;
                 font-size: 16px;
             }
+            /* تنظیم ویجت برای موبایل */
+            .ticker-container {
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch; /* اسکرول روان توی iOS */
+                scrollbar-width: thin; /* اسکرول بار باریک */
+            }
+            .ticker-container::-webkit-scrollbar {
+                height: 8px;
+            }
+            .ticker-container::-webkit-scrollbar-thumb {
+                background-color: #3498db;
+                border-radius: 4px;
+            }
         }
     </style>
 </head>
@@ -315,8 +329,14 @@
 
     <!-- صفحه اصلی -->
     <div id="home" class="content active">
-        <div style="margin-top: 10px; max-width: 100%; overflow-x: auto;">
-            <tgju type="ticker-tap" items="398096,398097,137121,391293,137203,137205" columns="dot" speed="30" token="webservice"></tgju>
+        <div class="ticker-container" style="margin-top: 10px;">
+            <tgju
+                type="ticker-tap"
+                items="398096,398097,137121,391293,137203,137205,137138"
+                columns="dot"
+                speed="33"
+                token="webservice"
+            ></tgju>
             <script src="https://api.tgju.org/v1/widget/v2" defer></script>
         </div>
         <div class="calculator-container">
@@ -866,4 +886,5 @@
             });
         }
     </script>
+</body>
 </html>
