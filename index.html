@@ -335,20 +335,18 @@
         <a href="#" onclick="showPage('charts')">نمودار قیمت‌ها</a>
     </div>
 
-    <!-- صفحه اصلی -->
     <div id="home" class="content active">
+        <div id="offlineMessage" style="display: none; text-align: center; background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+            اتصال به اینترنت برقرار نیست. برخی از قابلیت‌ها (مانند ویجت‌های قیمت) ممکن است به درستی کار نکنند.
+        </div>
         
-
-
-<div class="ticker-container" style="margin-top: 10px; display: flex; overflow-x: auto; white-space: nowrap; gap: 10px;">
-    <tgju type="ticker" items="137121" columns="dot" token="webservice" style="transform: scale(0.7); transform-origin: top left;"></tgju>
-    <tgju type="ticker" items="137120" columns="dot" token="webservice" style="transform: scale(0.7); transform-origin: top left;"></tgju>
-    <tgju type="ticker" items="137203" columns="dot" token="webservice" style="transform: scale(0.7); transform-origin: top left;"></tgju>
-    <tgju type="ticker" items="137119" columns="dot" token="webservice" style="transform: scale(0.7); transform-origin: top left;"></tgju>
-    <script src="https://api.tgju.org/v1/widget/v2" defer></script>
-</div>
-
-
+        <div class="ticker-container" style="margin-top: 10px; display: flex; overflow-x: auto; white-space: nowrap; gap: 10px;">
+            <tgju type="ticker" items="137121" columns="dot" token="webservice" style="transform: scale(0.7); transform-origin: top left;"></tgju>
+            <tgju type="ticker" items="137120" columns="dot" token="webservice" style="transform: scale(0.7); transform-origin: top left;"></tgju>
+            <tgju type="ticker" items="137203" columns="dot" token="webservice" style="transform: scale(0.7); transform-origin: top left;"></tgju>
+            <tgju type="ticker" items="137119" columns="dot" token="webservice" style="transform: scale(0.7); transform-origin: top left;"></tgju>
+            <script src="https://api.tgju.org/v1/widget/v2" defer></script>
+        </div>
 
         <div class="calculator-container">
             <div class="calculator">
@@ -371,7 +369,6 @@
         </div>
     </div>
 
-    <!-- صفحه مظنه -->
     <div id="mazne" class="content">
         <div class="calculator-container">
             <div class="calculator">
@@ -397,7 +394,6 @@
         </div>
     </div>
 
-    <!-- صفحه انس -->
     <div id="ounce" class="content">
         <div class="calculator-container">
             <div class="calculator">
@@ -419,7 +415,6 @@
         </div>
     </div>
 
-    <!-- صفحه محاسبه بدهی مشتری -->
     <div id="debt" class="content">
         <div class="calculator-container">
             <div class="calculator">
@@ -461,7 +456,6 @@
         </div>
     </div>
 
-    <!-- صفحه تبدیل عیار -->
     <div id="convert" class="content">
         <div class="calculator-container">
             <div class="calculator">
@@ -488,7 +482,6 @@
         </div>
     </div>
 
-    <!-- صفحه محاسبه عیار مجموع -->
     <div id="totalKarat" class="content">
         <div class="calculator-container">
             <div class="calculator">
@@ -509,7 +502,6 @@
         </div>
     </div>
 
-    <!-- صفحه نمودار قیمت‌ها -->
     <div id="charts" class="content">
         <div style="margin-top: 20px; max-width: 600px; margin-left: auto; margin-right: auto;">
             <tgju type="market-overview" items="137121,391293,137138,137203,137119" columns="dot" token="webservice"></tgju>
@@ -610,7 +602,21 @@
             updateDebtTable(debtHistory);
             let totalKaratHistory = JSON.parse(localStorage.getItem("totalKaratHistory")) || [];
             updateTotalKaratTable(totalKaratHistory);
+
+            // بررسی وضعیت آنلاین و نمایش پیام
+            updateOnlineStatus();
+            window.addEventListener('online', updateOnlineStatus);
+            window.addEventListener('offline', updateOnlineStatus);
         };
+
+        function updateOnlineStatus() {
+            const offlineMessage = document.getElementById('offlineMessage');
+            if (navigator.onLine) {
+                offlineMessage.style.display = 'none';
+            } else {
+                offlineMessage.style.display = 'block';
+            }
+        }
 
         function calculateGold() {
             let priceInput = document.getElementById("goldPrice").value.replace(/,/g, "");
@@ -721,7 +727,8 @@
             let debtAmount = parseFloat(document.getElementById("debtAmount").value.replace(/,/g, "")) || 0;
             let debtGoldPrice = parseFloat(document.getElementById("debtGoldPrice").value.replace(/,/g, "")) || 0;
             if (isNaN(debtAmount) || isNaN(debtGoldPrice) || debtAmount <= 0 || debtGoldPrice <= 0) {
-                alert("لطفاً مقادیر معتبر (بزرگ‌تر از صفر) وارد کنید!");
+                // استفاده از یک modal سفارشی به جای alert
+                showCustomAlert("لطفاً مقادیر معتبر (بزرگ‌تر از صفر) وارد کنید!");
                 return;
             }
             let result = debtAmount / debtGoldPrice;
@@ -739,7 +746,8 @@
             let paymentAmount = parseFloat(document.getElementById("paymentAmount").value.replace(/,/g, "")) || 0;
             let paymentGoldPrice = parseFloat(document.getElementById("paymentGoldPrice").value.replace(/,/g, "")) || 0;
             if (isNaN(paymentAmount) || isNaN(paymentGoldPrice) || paymentAmount <= 0 || paymentGoldPrice <= 0) {
-                alert("لطفاً مقادیر معتبر (بزرگ‌تر از صفر) وارد کنید!");
+                // استفاده از یک modal سفارشی به جای alert
+                showCustomAlert("لطفاً مقادیر معتبر (بزرگ‌تر از صفر) وارد کنید!");
                 return;
             }
             let result = paymentAmount / paymentGoldPrice;
@@ -820,7 +828,8 @@
             let karatInput = document.getElementById("totalKaratValue").value.replace(/,/g, "");
 
             if (!weightInput || !karatInput) {
-                alert("لطفاً همه کادرها را پر کنید!");
+                // استفاده از یک modal سفارشی به جای alert
+                showCustomAlert("لطفاً همه کادرها را پر کنید!");
                 return;
             }
 
@@ -828,7 +837,8 @@
             let karat = parseFloat(karatInput) || 0;
 
             if (weight <= 0 || karat <= 0 || karat > 1000) {
-                alert("لطفاً مقادیر معتبر (بزرگ‌تر از صفر و عیار کمتر از ۱۰۰۰) وارد کنید!");
+                // استفاده از یک modal سفارشی به جای alert
+                showCustomAlert("لطفاً مقادیر معتبر (بزرگ‌تر از صفر و عیار کمتر از ۱۰۰۰) وارد کنید!");
                 return;
             }
 
@@ -884,6 +894,41 @@
                 }, 300);
             }
         });
+
+        // تابع برای نمایش پیام سفارشی به جای alert
+        function showCustomAlert(message) {
+            const alertBox = document.createElement('div');
+            alertBox.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: #fff;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+                padding: 20px;
+                z-index: 1001;
+                text-align: center;
+                font-family: 'Vazirmatn', Arial, sans-serif;
+                font-size: 18px;
+                color: #333;
+                max-width: 80%;
+            `;
+            alertBox.innerHTML = `
+                <p>${message}</p>
+                <button onclick="this.parentNode.remove()" style="
+                    background-color: #3498db;
+                    color: white;
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    margin-top: 15px;
+                ">باشه</button>
+            `;
+            document.body.appendChild(alertBox);
+        }
     </script>
     <script>
         if ('serviceWorker' in navigator) {
